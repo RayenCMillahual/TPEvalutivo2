@@ -1,74 +1,68 @@
+<!-- src/components/LoginForm.vue -->
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="submitForm">
     <div>
-      <input v-model="username" placeholder="Usuario" required />
+      <label for="username">Usuario</label>
+      <input v-model="values.username" placeholder="Usuario" type="text" name="username" />
+      <span v-if="errors.username" style="color: red;">{{ errors.username }}</span>
     </div>
+    
     <div>
-      <input v-model="password" type="password" placeholder="Contraseña" required />
+      <label for="password">Contraseña</label>
+      <input v-model="values.password" type="password" placeholder="Contraseña" name="password" />
+      <span v-if="errors.password" style="color: red;">{{ errors.password }}</span>
     </div>
-    <div>
-      <label>
-        <input v-model="remember" type="checkbox" /> Recordarme
-      </label>
-    </div>
-    <button type="submit" :disabled="loading">{{ loading ? 'Cargando...' : 'Ingresar' }}</button>
+
+    <button type="submit" :disabled="loading" :class="{ disabled: loading }">
+      {{ loading ? 'Cargando...' : 'Ingresar' }}
+    </button>
     <p v-if="error" style="color: red;">{{ error }}</p>
   </form>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { useForm } from 'vee-validate';
+import * as yup from 'yup';
 import { useAuthStore } from '../stores/authStore';
 import { useRouter } from 'vue-router';
 
-// Definición de las variables que enlazarás con los inputs
-const username = ref('');
-const password = ref('');
-const remember = ref(false);
+const schema = yup.object({
+  username: yup.string().required('El nombre de usuario es obligatorio'),
+  password: yup.string().required('La contraseña es obligatoria'),
+});
+
+const { handleSubmit, values, errors } = useForm({
+  validationSchema: schema,
+});
+
 const error = ref('');
 const loading = ref(false);
-
-// Importar el store y el router
 const authStore = useAuthStore();
 const router = useRouter();
 
-// Al montar el componente, intenta recuperar el nombre de usuario guardado
-onMounted(() => {
-  const storedUsername = localStorage.getItem('username');
-  if (storedUsername) {
-    username.value = storedUsername;
-    remember.value = true; // Marca el checkbox si el usuario fue recordado
-  }
-});
-const handleSubmit = async () => {
-  error.value = ''; // Limpiar el mensaje de error
-  loading.value = true; // Inicia la carga
-
-  // Validar que los campos no estén vacíos
-  if (!username.value || !password.value) {
-    error.value = 'Por favor, completa todos los campos';
-    loading.value = false; // Detener la carga
-    return;
-  }
-
+const submitForm = handleSubmit(async (formValues) => {
+  error.value = '';
+  loading.value = true;
   try {
-    // Intenta iniciar sesión
-    await authStore.login(username.value, password.value);
-    // Manejar "Recordarme"
+    await authStore.login(formValues.username, formValues.password);
+
+    // Guardar en localStorage si el usuario quiere ser recordado
     if (remember.value) {
-      localStorage.setItem('username', username.value); // Guarda el usuario en localStorage
-    } else {
-      localStorage.removeItem('username'); // Limpia el nombre de usuario si no se recuerda
+      localStorage.setItem('appName_remember', formValues.username);
     }
 
-    router.push({ name: 'home' }); // Redirige al home
+    router.push({ name: 'home' });
   } catch (err) {
-    // Manejo de errores
-    error.value = err || 'Error desconocido. Intenta de nuevo.'; // Captura el error directamente
+    error.value = 'Usuario o contraseña incorrectos';
   } finally {
-    loading.value = false; // Detener la carga al finalizar
+    loading.value = false;
   }
-};
+});
+const storedUsername = localStorage.getItem('appName_remember');
+if (storedUsername) {
+  values.username = storedUsername; // Asignar el nombre de usuario almacenado
+}
 
 </script>
 
@@ -97,16 +91,9 @@ button {
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
-p {
-  text-align: center;
-  color: red;
+button.disabled {
+  background-color: #ccc; /* Estilo para el botón deshabilitado */
 }
 </style>

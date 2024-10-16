@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-</script>
+import { useUserStore } from '@/stores/userStore';
+const userStore = useUserStore();
+const authStore = useAuthStore();
+authStore.loadUserFromLocalStorage();
+
+userStore.initializeUser();</script>
 
 <template>
   <header>

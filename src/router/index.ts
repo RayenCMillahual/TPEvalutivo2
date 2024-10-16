@@ -1,4 +1,3 @@
-// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/userStore'; // Importa el userStore de Pinia
 import LoginPage from '@/views/LoginPage.vue';

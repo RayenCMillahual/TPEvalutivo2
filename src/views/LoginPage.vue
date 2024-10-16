@@ -1,42 +1,51 @@
 <template>
   <div class="wrapper">
-    <div class="wrapper">
+    <h1>Login</h1>
     <LoginForm />
-  </div>
-    <form @submit.prevent="handleSubmit">
-      <h1>Login</h1>
-      <div class="input-bx">
-        <input v-model="user" type="text" placeholder="Usuario" required />
-        <ion-icon class="icon" name="person-circle"></ion-icon>
-      </div>
-      <div class="input-bx">
-        <input v-model="password" type="password" placeholder="Contraseña" required />
-        <ion-icon class="icon" name="lock-closed"></ion-icon>
-      </div>
-      <div class="remember-forgot">
-        <label><input v-model="remember" type="checkbox" /> Recordarme</label>
-        <a href="#">Olvidaste tu contraseña</a>
-      </div>
-      <button type="submit" class="btn">Ingresar</button>
-    </form>
+    <div class="remember-forgot">
+      <label>
+        <input v-model="remember" type="checkbox" /> Recordarme
+      </label>
+      <a href="#">Olvidaste tu contraseña</a>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import LoginForm from '../components/LoginForm.vue';
-const user = ref('');
-const password = ref('');
-const remember = ref(false);
-const router = useRouter();
 
-const handleSubmit = () => {
-  console.log({ user: user.value, password: password.value, remember: remember.value });
-  router.push('/home');
-};
+const remember = ref(false);
+
+// Aquí puedes implementar el manejo de eventos de recordar usuario si lo deseas
 </script>
 
 <style scoped>
-/* Aquí puedes pegar los estilos del archivo CSS */
+.wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remember-forgot a {
+  color: #007bff; /* Color del enlace */
+  text-decoration: none;
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline; /* Subrayado al pasar el mouse */
+}
 </style>
