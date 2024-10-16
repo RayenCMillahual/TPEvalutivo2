@@ -1,3 +1,4 @@
+// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/userStore'; // Importa el userStore de Pinia
 import LoginPage from '@/views/LoginPage.vue';
@@ -21,12 +22,17 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// Middleware para proteger rutas que requieren autenticación
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-  console.log("Autenticado: ", userStore.isAuthenticated);
+  
+  // Verifica si la ruta requiere autenticación
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-    next({ name: 'login' });
+    next({ name: 'login' }); // Redirige al login si no está autenticado
   } else {
-    next();
+    next(); // Continúa a la ruta solicitada
   }
 });
+
+export default router;

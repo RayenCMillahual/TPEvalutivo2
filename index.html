@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./public/styles.css">
+    <link rel="stylesheet" href="src/public/styles.css">
     <title>Login</title>
 </head>
 <body>
@@ -19,7 +19,8 @@
                 <ion-icon class="icon" name="lock-closed"></ion-icon>
             </div>
             <div class="remember-forgot">
-                <label><input type="checkbox" name="remember"> Recordarme</label>
+                <!-- Añadir id al checkbox para poder referenciarlo correctamente -->
+                <label><input type="checkbox" id="remember" name="remember"> Recordarme</label>
                 <a href="#">Olvidaste tu contraseña</a>
             </div>
             <button type="submit" class="btn">Ingresar</button>
@@ -27,6 +28,6 @@
     </div>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="./public/script.js"></script>
+    <script src="src/public/script.js"></script>
 </body>
 </html>
