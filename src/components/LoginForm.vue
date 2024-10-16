@@ -28,12 +28,10 @@ const remember = ref(false);
 // Importar el store y el router
 const store = useUserStore();
 const router = useRouter();
-
-// Función que se ejecuta al enviar el formulario
 const handleSubmit = () => {
-  // Guardar los datos del usuario en el store
   store.setUser({ user: user.value, password: password.value, remember: remember.value });
-  // Redirigir a la vista de Home usando el nombre de la ruta
-  router.push({ name: 'home' });
+  router.push({ name: 'home' }); // Redirige al home
 };
+
+
 </script>

@@ -19,11 +19,14 @@ import { useUserStore } from '../stores/userStore';
 // Usa el store
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-
+console.log("Usuario autenticado en HomeView: ", user);
+if (!user.value) {
+  console.log('No estás autenticado'); // Esto debería ayudarte a saber si estás autenticado
+}
 // cierre de sesión
 const handleLogout = () => {
   userStore.clearUser(); // Limpia los datos del usuario
   //  redirigir al usuario a la página de login si es necesario
-  // router.push({ name: 'login' }); // Descomentar si quieres redirigir
+  router.push({ name: 'home' });
 };
 </script>

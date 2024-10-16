@@ -5,31 +5,28 @@ import HomeView from '@/views/HomeView.vue';
 
 const routes = [
   {
-    path: '/',
-    name: 'login',
-    component: LoginPage,
-  },
-  {
     path: '/home',
     name: 'home',
     component: HomeView,
     meta: { requiresAuth: true }, // Protección para rutas autenticadas
   },
+  {
+    path: '/',
+    name: 'login',
+    component: LoginPage,
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
-// Protección de rutas: verifica si la ruta requiere autenticación
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore(); // Accede al store del usuario
+  const userStore = useUserStore();
+  console.log("Autenticado: ", userStore.isAuthenticated);
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-    next({ name: 'login' }); // Redirige al login si no está autenticado
+    next({ name: 'login' });
   } else {
-    next(); // Permite el acceso a la ruta
+    next();
   }
 });
-
-export default router;
