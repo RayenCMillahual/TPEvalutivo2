@@ -21,6 +21,5 @@ function handleResponse(response) {
 }
 
 function handleError(error) {
-    // Manejar errores de red u otros errores
     return Promise.reject({ message: error.message || 'Error desconocido' });
 }

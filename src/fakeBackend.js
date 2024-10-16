@@ -3,7 +3,7 @@ const users = [
     { id: 2, username: 'admin', password: 'admin', role: 'admin' },
 ];
 
-// Simulación de la función fakeBackend
+// Simulación
 export const fakeBackend = () => {
     // Interceptar las solicitudes
     const originalFetch = window.fetch;
@@ -23,7 +23,7 @@ export const fakeBackend = () => {
             });
         }
 
-        // Manejar la obtención de información de usuarios
+        // obtención de información de usuarios
         if (url.endsWith('/users') && options.method === 'GET') {
             return Promise.resolve({
                 ok: true,
@@ -31,7 +31,7 @@ export const fakeBackend = () => {
             });
         }
 
-        // Manejar la obtención de información del usuario autenticado
+        // btención de información del usuario autenticado
         if (url.endsWith('/users/me') && options.method === 'GET') {
             const token = options.headers.Authorization?.split(' ')[1]; // Obtener el token del encabezado
             const userId = token ? parseInt(token.split('.')[1]) : null; // Extraer el ID del token
@@ -45,7 +45,7 @@ export const fakeBackend = () => {
             });
         }
 
-        // Manejar el registro de nuevos usuarios
+        // registro de nuevos usuarios
         if (url.endsWith('/register') && options.method === 'POST') {
             const body = JSON.parse(options.body);
             const existingUser = users.find(u => u.username === body.username);
@@ -62,7 +62,7 @@ export const fakeBackend = () => {
             return Promise.resolve({ ok: true });
         }
 
-        // Manejar la eliminación de usuarios (solo para admin)
+        // eliminación de usuarios (solo para admin)
         if (url.endsWith('/users') && options.method === 'DELETE') {
             const body = JSON.parse(options.body);
             const userIndex = users.findIndex(u => u.id === body.id);

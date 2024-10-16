@@ -1,4 +1,3 @@
-<!-- src/components/LoginForm.vue -->
 <template>
   <form @submit.prevent="submitForm">
     <div>
@@ -6,7 +5,6 @@
       <input v-model="values.username" placeholder="Usuario" type="text" name="username" />
       <span v-if="errors.username" style="color: red;">{{ errors.username }}</span>
     </div>
-    
     <div>
       <label for="password">Contraseña</label>
       <input v-model="values.password" type="password" placeholder="Contraseña" name="password" />
@@ -40,18 +38,14 @@ const error = ref('');
 const loading = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
-
 const submitForm = handleSubmit(async (formValues) => {
   error.value = '';
   loading.value = true;
   try {
     await authStore.login(formValues.username, formValues.password);
-
-    // Guardar en localStorage si el usuario quiere ser recordado
-    if (remember.value) {
+    if (formValues.remember) {
       localStorage.setItem('appName_remember', formValues.username);
     }
-
     router.push({ name: 'home' });
   } catch (err) {
     error.value = 'Usuario o contraseña incorrectos';
@@ -59,9 +53,10 @@ const submitForm = handleSubmit(async (formValues) => {
     loading.value = false;
   }
 });
+
 const storedUsername = localStorage.getItem('appName_remember');
 if (storedUsername) {
-  values.username = storedUsername; // Asignar el nombre de usuario almacenado
+  values.username = storedUsername;
 }
 
 </script>
@@ -94,6 +89,6 @@ button {
 }
 
 button.disabled {
-  background-color: #ccc; /* Estilo para el botón deshabilitado */
+  background-color: #ccc;
 }
 </style>

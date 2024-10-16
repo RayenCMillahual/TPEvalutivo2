@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/stores/userStore'; // Importa el userStore de Pinia
+import { useUserStore } from '@/stores/userStore';
 import LoginPage from '@/views/LoginPage.vue';
 import HomeView from '@/views/HomeView.vue';
 
@@ -8,7 +8,7 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView,
-    meta: { requiresAuth: true }, // Protección para rutas autenticadas
+    meta: { requiresAuth: true },
   },
   {
     path: '/',
@@ -22,15 +22,12 @@ const router = createRouter({
   routes,
 });
 
-// Middleware para proteger rutas que requieren autenticación
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-  
-  // Verifica si la ruta requiere autenticación
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-    next({ name: 'login' }); // Redirige al login si no está autenticado
+    next({ name: 'login' });
   } else {
-    next(); // Continúa a la ruta solicitada
+    next();
   }
 });
 

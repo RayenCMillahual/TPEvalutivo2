@@ -17,7 +17,6 @@ import LoginForm from '../components/LoginForm.vue';
 
 const remember = ref(false);
 
-// Aquí puedes implementar el manejo de eventos de recordar usuario si lo deseas
 </script>
 
 <style scoped>
@@ -41,11 +40,11 @@ h1 {
 }
 
 .remember-forgot a {
-  color: #007bff; /* Color del enlace */
+  color: #007bff;
   text-decoration: none;
 }
 
 .remember-forgot a:hover {
-  text-decoration: underline; /* Subrayado al pasar el mouse */
+  text-decoration: underline;
 }
 </style>
